@@ -21,4 +21,7 @@
         echo "error: ".$e->message();
     }
 
+    $dom = new DOMDocument('1.0', 'UTF-8');
+    echo $dom->saveXML();
+
     ?>

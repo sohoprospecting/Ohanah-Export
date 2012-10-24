@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<results>
+	<success>Yes</success>
+	<message></message>
+	<events>
+        <event>
+			<eventid>5354</eventid>
+			<eventtypeid></eventtypeid>
+			<eventtype></eventtype>
+			<title>Channel Islands Harbor Farmers Market</title>
+			<description>
+                <![CDATA[<p>Local farm fresh produce, fruits, plants, flowers, fresh seafood, bakery, cheese, nuts, BBQ, arts and crafts, entertainment and more.</p>
+                <p>Pets not allowed.</p>]]>
+            </description>
+			<startdate>12/06/2009</startdate>
+			<enddate></enddate>
+			<recurrence>Recurring weekly on Sunday</recurrence>
+			<times>Every Sunday, 10:00 a.m. - 2:00 p.m.</times>
+			<location>test</location>
+			<phone>(805) 643-6458</phone>
+			<admission>Free</admission>
+			<website>www.channelislandsharbor.org</website>
+			<imagefile>http://www.visitoxnard.com/includes/media/images/Sunflowers-243-x-190.jpg</imagefile>
+			<address>3600 S. Harbor Blvd.</address>
+			<city>Oxnard</city>
+			<state>CA</state>
+			<zip>93035</zip>
+			<latitude></latitude>
+			<longitude></longitude>
+			<featured>No</featured>
+			<listingid></listingid>
+			<created>09/23/2008 09:43:14 AM</created>
+			<lastupdated>11/30/2009 05:52:40 PM</lastupdated>
+
+			<eventcategories>
+				<eventcategory>
+					<categoryid>42</categoryid>
+					<categoryname>ALL EVENTS</categoryname>
+				</eventcategory>
+
+				<eventcategory>
+					<categoryid>38</categoryid>
+					<categoryname>Family Fun</categoryname>
+				</eventcategory>
+
+				<eventcategory>
+					<categoryid>29</categoryid>
+					<categoryname>Farmer&apos;s Market</categoryname>
+				</eventcategory>
+
+			</eventcategories>
+
+			<eventdates>
+				<eventdate>01/06/2013</eventdate>
+				<eventdate>01/13/2013</eventdate>
+				<eventdate>01/20/2013</eventdate>
+				<eventdate>01/27/2013</eventdate>
+				<eventdate>02/03/2013</eventdate>
+				<eventdate>02/10/2013</eventdate>
+				<eventdate>02/17/2013</eventdate>
+				<eventdate>02/24/2013</eventdate>
+				<eventdate>03/03/2013</eventdate>
+			</eventdates>
+			<customfields>
+			</customfields>
+		</event>
+    </events>
+<results>

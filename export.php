@@ -60,17 +60,12 @@
     //get data from database
     $database = JFactory::getDBO();
     $database->setQuery($query);
-    $events = $database->loadObjectList();
+    $events   = $database->loadObjectList();
 
     //creates dom object
-    $doc = new DOMDocument('1.0', 'UTF-8');
-    $results = $doc->createElement('results');
+    $doc            = new DOMDocument('1.0', 'UTF-8');
+    $results        = $doc->createElement('results');
     $eventsElement  = $doc->createElement('events');
-
-    //comment
-    echo "banana!!!";
-    //new banana
-
 
     //loops onto data creating xml
     foreach($events as $event){
@@ -80,7 +75,12 @@
         $eventElement->appendChild($doc->createElement('eventtypeid', $event->eventtypeid));
         $eventElement->appendChild($doc->createElement('eventtype',   $event->eventtype));
         $eventElement->appendChild($doc->createElement('title',       $event->title));
-        $eventElement->appendChild($doc->createElement('description', $event->description));
+
+        //Handling Description - CDATA
+        $description = $doc->createElement('description');
+        $description->appendChild($doc->createCDATASection($event->description));
+        $eventElement->appendChild($description);
+
         $eventElement->appendChild($doc->createElement('startdate',   $event->startdate));
         $eventElement->appendChild($doc->createElement('enddate',     $event->enddate));
         $eventElement->appendChild($doc->createElement('recurrence',  $event->recurrence));
@@ -109,7 +109,8 @@
     $results->appendChild($eventsElement);
     $doc->appendChild($results);
 
-
+    $doc->formatOutput      = true;
+    $oc->preserveWhiteSpace = false;
     echo $doc->saveXML();
 
     ?>

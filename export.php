@@ -65,16 +65,44 @@
     //creates dom object
     $doc = new DOMDocument('1.0', 'UTF-8');
     $results = $doc->createElement('results');
-    $events  = $doc->createElement('events');
+    $eventsElement  = $doc->createElement('events');
 
 
     //loops onto data creating xml
     foreach($events as $event){
-        echo $event->eventid."<br/>";
-        echo $event->title."<br/>";
+        $eventElement = $doc->createElement('event');
+
+        $eventElement->appendChild($doc->createElement('eventid',     $event->eventid));
+        $eventElement->appendChild($doc->createElement('eventtypeid', $event->eventtypeid));
+        $eventElement->appendChild($doc->createElement('eventtype',   $event->eventtype));
+        $eventElement->appendChild($doc->createElement('title',       $event->title));
+        $eventElement->appendChild($doc->createElement('description', $event->description));
+        $eventElement->appendChild($doc->createElement('startdate',   $event->startdate));
+        $eventElement->appendChild($doc->createElement('enddate',     $event->enddate));
+        $eventElement->appendChild($doc->createElement('recurrence',  $event->recurrence));
+        $eventElement->appendChild($doc->createElement('time',        $event->time));
+        $eventElement->appendChild($doc->createElement('location',    $event->location));
+        $eventElement->appendChild($doc->createElement('phone',       $event->phone));
+        $eventElement->appendChild($doc->createElement('admission',   $event->admission));
+        $eventElement->appendChild($doc->createElement('website',     $event->website));
+        $eventElement->appendChild($doc->createElement('imagefile',   $event->imagefile));
+        $eventElement->appendChild($doc->createElement('address',     $event->address));
+        $eventElement->appendChild($doc->createElement('city',        $event->city));
+        $eventElement->appendChild($doc->createElement('state',       $event->state));
+        $eventElement->appendChild($doc->createElement('zip',         $event->zip));
+        $eventElement->appendChild($doc->createElement('latitude',    $event->latitude));
+        $eventElement->appendChild($doc->createElement('longitude',   $event->longitude));
+        $eventElement->appendChild($doc->createElement('featured',    $event->featured));
+        $eventElement->appendChild($doc->createElement('listingid',   $event->listingid));
+        $eventElement->appendChild($doc->createElement('created',     $event->created));
+        $eventElement->appendChild($doc->createElement('lastupdated', $event->lastupdated));
+        $eventElement->appendChild($doc->createElement('categoryid',  $event->categoryid));
+        $eventElement->appendChild($doc->createElement('categoryname',$event->categoryname));
+
+        $eventsElement->appendChild($eventElement);
     }
 
-    $results->appendChild($events);
+    $results->appendChild($eventsElement);
     $doc->appendChild($results);
 
 

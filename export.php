@@ -67,6 +67,7 @@
     $results = $doc->createElement('results');
     $eventsElement  = $doc->createElement('events');
 
+    echo "banana!!!";
 
     //loops onto data creating xml
     foreach($events as $event){

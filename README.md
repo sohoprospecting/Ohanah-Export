@@ -1,4 +1,4 @@
 Oahanah-Export
 ==============
 
-Script to export event from ohanah component to an xml format
+Script to export events from ohanah component to an xml format

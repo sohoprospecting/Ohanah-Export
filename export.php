@@ -21,6 +21,30 @@
         echo "error: ".$e->message();
     }
 
+    function getGeoData($address){
+        $xml = simplexml_load_file("http://maps.google.com/maps/api/geocode/xml?address=".$address.",United States&sensor=false") or die("connection error");
+
+        // print_r($xml);
+
+        if((is_object($xml)) && ($xml->status == 'OK')){
+            $geodata = array("latitude"  => $xml->result->geometry->location->lat,
+                             "longitude" => $xml->result->geometry->location->lng,
+                             "address"   => $xml->result->address_component[0]->long_name.", ".$xml->result->address_component[1]->long_name,
+                             "city"      => isset($xml->result->address_component[3]->long_name) ? $xml->result->address_component[3]->long_name : '',
+                             "state"     => isset($xml->result->address_component[5]->long_name) ? $xml->result->address_component[5]->long_name : '',
+                             "zipcode"   => isset($xml->result->address_component[7]->long_name) ? $xml->result->address_component[7]->long_name : '');
+        }else{
+            $geodata = array("latitude"  => 0,
+                             "longitude" => 0,
+                             "address"   => '',
+                             "city"      => '',
+                             "state"     => '',
+                             "zipcode"   => '');
+        }
+
+        return $geodata;
+    }
+
     $query  = "SELECT  `events`.`ohanah_event_id` AS `eventid`,                                  \n\r";
     $query .= "        ''                         AS `eventtypeid`,                              \n\r";
     $query .= "        ''                         AS `eventtype`,                                \n\r";
@@ -43,8 +67,8 @@
     $query .= "        ''                   AS `website`,                                        \n\r";
     $query .= "        ''                   AS `imagefile`,                                      \n\r";
     $query .= "        `events`.`address`   AS `address`,                                        \n\r";
-    $query .= "        ''                   AS `city`,                                           \n\r";
-    $query .= "        ''                   AS `state`,                                          \n\r";
+    $query .= "        `events`.`geolocated_city`   AS `city`,                                   \n\r";
+    $query .= "        `events`.`geolocated_state`  AS `state`,                                  \n\r";
     $query .= "        ''                   AS `zip`,                                            \n\r";
     $query .= "        `events`.`latitude`  AS `latitude`,                                       \n\r";
     $query .= "        `events`.`longitude` AS `longitude`,                                      \n\r";
@@ -90,18 +114,23 @@
         $eventElement->appendChild($doc->createElement('admission',   $event->admission));
         $eventElement->appendChild($doc->createElement('website',     $event->website));
         $eventElement->appendChild($doc->createElement('imagefile',   $event->imagefile));
-        $eventElement->appendChild($doc->createElement('address',     $event->address));
-        $eventElement->appendChild($doc->createElement('city',        $event->city));
-        $eventElement->appendChild($doc->createElement('state',       $event->state));
-        $eventElement->appendChild($doc->createElement('zip',         $event->zip));
-        $eventElement->appendChild($doc->createElement('latitude',    $event->latitude));
-        $eventElement->appendChild($doc->createElement('longitude',   $event->longitude));
+
+        //handling address
+        $geodata = getGeoData($event->address);
+        $eventElement->appendChild($doc->createElement('address',     $geodata['address']));
+        $eventElement->appendChild($doc->createElement('city',        $geodata['city']));
+        $eventElement->appendChild($doc->createElement('state',       $geodata['state']));
+        $eventElement->appendChild($doc->createElement('zip',         $geodata['zipcode']));
+        $eventElement->appendChild($doc->createElement('latitude',    $geodata['latitude']));
+        $eventElement->appendChild($doc->createElement('longitude',   $geodata['longitude']));
+
         $eventElement->appendChild($doc->createElement('featured',    $event->featured));
         $eventElement->appendChild($doc->createElement('listingid',   $event->listingid));
         $eventElement->appendChild($doc->createElement('created',     $event->created));
         $eventElement->appendChild($doc->createElement('lastupdated', $event->lastupdated));
         $eventElement->appendChild($doc->createElement('categoryid',  $event->categoryid));
         $eventElement->appendChild($doc->createElement('categoryname',$event->categoryname));
+
 
         $eventsElement->appendChild($eventElement);
     }

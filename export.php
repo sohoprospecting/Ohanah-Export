@@ -47,10 +47,10 @@
 
     function getEventDates($event_id){
         $query  = "SELECT DATE_FORMAT(`events`.`date`,'%m/%d/%Y') AS `startdate` \n\r";
-        $query  = "  FROM `#__ohanah_events` AS `events`                         \n\r";
-        $query  = " WHERE `events`.`recurringParent` = $event_id                 \n\r";
-        $query  = "    OR `events`.`ohanah_event_id` = $event_id                 \n\r";
-        $query  = " ORDER BY `startdate`                                         \n\r";
+        $query .= "  FROM `#__ohanah_events` AS `events`                         \n\r";
+        $query .= " WHERE `events`.`recurringParent` = ".$event_id."             \n\r";
+        $query .= "    OR `events`.`ohanah_event_id` = ".$event_id."             \n\r";
+        $query .= " ORDER BY `startdate`                                         \n\r";
 
         $database = JFactory::getDBO();
         $database->setQuery($query);
@@ -77,7 +77,7 @@
     $query .= "        ''                   AS `phone`,                                          \n\r";
     $query .= "        ''                   AS `admission`,                                      \n\r";
     $query .= "        ''                   AS `website`,                                        \n\r";
-    $query .= "        ''                   AS `imagefile`,                                      \n\r";
+    $query .= "        `events`.`picture`   AS `imagefile`,                                      \n\r";
     $query .= "        `events`.`address`   AS `address`,                                        \n\r";
     $query .= "        `events`.`geolocated_city`   AS `city`,                                   \n\r";
     $query .= "        `events`.`geolocated_state`  AS `state`,                                  \n\r";
@@ -125,7 +125,13 @@
         $eventElement->appendChild($doc->createElement('phone',       $event->phone));
         $eventElement->appendChild($doc->createElement('admission',   $event->admission));
         $eventElement->appendChild($doc->createElement('website',     $event->website));
-        $eventElement->appendChild($doc->createElement('imagefile',   $event->imagefile));
+
+        //handle Image
+        if(trim($event->imagefile) != ''){
+            $eventElement->appendChild($doc->createElement('imagefile',   "http://".JURI::getInstance(JURI::base())->getHost()."/media/com_ohanah/attachments/".$event->imagefile));
+        }else{
+            $eventElement->appendChild($doc->createElement('imagefile',   ''));
+        }
 
         //handling address
         $geodata = getGeoData($event->address);
@@ -150,13 +156,14 @@
         $eventElement->appendChild($eventcategories);
 
         //handling event dates
-        $dates = getEventDates($event->eventid);
         $eventdates = $doc->createElement('eventdates');
+        $dates = getEventDates($event->eventid);
         foreach($dates as $date){
             $eventdates->appendChild($doc->createElement('eventdate',$date->startdate));
         }
         $eventElement->appendChild($eventdates);
 
+        $eventdates->appendChild($doc->createElement('customfields',''));
         $eventsElement->appendChild($eventElement);
     }
 

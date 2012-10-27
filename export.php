@@ -128,9 +128,14 @@
         $eventElement->appendChild($doc->createElement('listingid',   $event->listingid));
         $eventElement->appendChild($doc->createElement('created',     $event->created));
         $eventElement->appendChild($doc->createElement('lastupdated', $event->lastupdated));
-        $eventElement->appendChild($doc->createElement('categoryid',  $event->categoryid));
-        $eventElement->appendChild($doc->createElement('categoryname',$event->categoryname));
 
+        //handling categories
+        $eventcategories = $doc->createElement('eventcategories');
+        $eventcategory   = $doc->createElement('eventcategory');
+        $eventcategory->appendChild($doc->createElement('categoryid',  $event->categoryid));
+        $eventcategory->appendChild($doc->createElement('categoryname',$event->categoryname));
+        $eventcategories->appendChild($eventcategory);
+        $eventElement->appendChild($eventcategories);
 
         $eventsElement->appendChild($eventElement);
     }

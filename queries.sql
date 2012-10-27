@@ -88,3 +88,4 @@ SELECT
   `events`.`registration_system`,
   `events`.`allow_only_one_ticket`
   FROM `jos_ohanah_events` AS `events`
+  WHERE `events`.`recurringParent` = 0

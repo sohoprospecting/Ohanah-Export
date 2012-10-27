@@ -45,6 +45,18 @@
         return $geodata;
     }
 
+    function getEventDates($event_id){
+        $query  = "SELECT DATE_FORMAT(`events`.`date`,'%m/%d/%Y') AS `startdate` \n\r";
+        $query  = "  FROM `#__ohanah_events` AS `events`                         \n\r";
+        $query  = " WHERE `events`.`recurringParent` = $event_id                 \n\r";
+        $query  = "    OR `events`.`ohanah_event_id` = $event_id                 \n\r";
+        $query  = " ORDER BY `startdate`                                         \n\r";
+
+        $database = JFactory::getDBO();
+        $database->setQuery($query);
+        return $database->loadObjectList();
+    }
+
     $query  = "SELECT  `events`.`ohanah_event_id` AS `eventid`,                                  \n\r";
     $query .= "        ''                         AS `eventtypeid`,                              \n\r";
     $query .= "        ''                         AS `eventtype`,                                \n\r";
@@ -136,6 +148,14 @@
         $eventcategory->appendChild($doc->createElement('categoryname',$event->categoryname));
         $eventcategories->appendChild($eventcategory);
         $eventElement->appendChild($eventcategories);
+
+        //handling event dates
+        $dates = getEventDates($event->eventid);
+        $eventdates = $doc->createElement('eventdates');
+        foreach($dates as $date){
+            $eventdates->appendChild($doc->createElement('eventdate',$date->startdate));
+        }
+        $eventElement->appendChild($eventdates);
 
         $eventsElement->appendChild($eventElement);
     }

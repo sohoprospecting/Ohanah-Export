@@ -35,9 +35,12 @@ SELECT  `events`.`ohanah_event_id` AS `eventid`,
  WHERE `events`.`recurringParent` = 0
 
 
-  09/23/2008 09:43:14 AM
+--get childs
+SELECT `events`.`eventid`, DATE_FORMAT(`events`.`date`,'%m/%d/%Y') AS `startdate`
+  FROM `jos_ohanah_events` AS `events`
+ WHERE `events`.`recurringParent` = 1
+    OR `events`.`eventid`              = 1
 
-  SELECT DATE_FORMAT(`events`.`created_on`,'%m/%d/%Y %r') FROM  `jos_ohanah_events`  AS `events`
 
 SELECT
   `events`.`ohanah_event_id`,

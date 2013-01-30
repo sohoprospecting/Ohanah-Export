@@ -34,12 +34,14 @@ SELECT  `events`.`ohanah_event_id` AS `eventid`,
   FROM  `jos_ohanah_events`        AS `events` INNER JOIN `jos_ohanah_categories` AS `cat` ON `cat`.`ohanah_category_id` = `events`.`ohanah_category_id`
  WHERE `events`.`recurringParent` = 0
 
+eventid
 
 --get childs
-SELECT `events`.`eventid`, DATE_FORMAT(`events`.`date`,'%m/%d/%Y') AS `startdate`
+SELECT `events`.`ohanah_event_id`, DATE_FORMAT(`events`.`date`,'%m/%d/%Y') AS `startdate`
   FROM `jos_ohanah_events` AS `events`
  WHERE `events`.`recurringParent` = 1
-    OR `events`.`eventid`              = 1
+    OR `events`.`ohanah_event_id` = 1
+ ORDER BY `startdate`
 
 
 SELECT

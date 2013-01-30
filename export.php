@@ -1,6 +1,6 @@
 <?php
 
-    error_reporting(E_ALL);
+    error_reporting(0);
 
     ini_set('memory_limit', '2048M');
     ini_set('max_execution_time', 900);
@@ -93,6 +93,8 @@
     $query .= " FROM  `#__ohanah_events`          AS `events` INNER JOIN `#__ohanah_categories` AS `cat` ON `cat`.`ohanah_category_id` = `events`.`ohanah_category_id` \n\r";
     $query .= "WHERE `events`.`recurringParent` = 0                                              \n\r";
 
+    // echo "<pre>".$query."</pre>";
+
     //get data from database
     $database = JFactory::getDBO();
     $database->setQuery($query);
@@ -101,6 +103,10 @@
     //creates dom object
     $doc            = new DOMDocument('1.0', 'UTF-8');
     $results        = $doc->createElement('results');
+
+    $results->appendChild($doc->createElement('success', 'Yes'));
+    $results->appendChild($doc->createElement('message', 'Exported from Ohanah'));
+
     $eventsElement  = $doc->createElement('events');
 
     //loops onto data creating xml
@@ -110,7 +116,7 @@
         $eventElement->appendChild($doc->createElement('eventid',     $event->eventid));
         $eventElement->appendChild($doc->createElement('eventtypeid', $event->eventtypeid));
         $eventElement->appendChild($doc->createElement('eventtype',   $event->eventtype));
-        $eventElement->appendChild($doc->createElement('title',       $event->title));
+        $eventElement->appendChild($doc->createElement('title',       htmlspecialchars($event->title)));
 
         //Handling Description - CDATA
         $description = $doc->createElement('description');
@@ -150,8 +156,8 @@
         //handling categories
         $eventcategories = $doc->createElement('eventcategories');
         $eventcategory   = $doc->createElement('eventcategory');
-        $eventcategory->appendChild($doc->createElement('categoryid',  $event->categoryid));
-        $eventcategory->appendChild($doc->createElement('categoryname',$event->categoryname));
+        $eventcategory->appendChild($doc->createElement('categoryid',   $event->categoryid));
+        $eventcategory->appendChild($doc->createElement('categoryname', htmlspecialchars($event->categoryname)));
         $eventcategories->appendChild($eventcategory);
         $eventElement->appendChild($eventcategories);
 
@@ -163,7 +169,7 @@
         }
         $eventElement->appendChild($eventdates);
 
-        $eventdates->appendChild($doc->createElement('customfields',''));
+        $eventElement->appendChild($doc->createElement('customfields',''));
         $eventsElement->appendChild($eventElement);
     }
 

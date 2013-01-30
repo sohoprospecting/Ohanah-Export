@@ -30,7 +30,7 @@
             $geodata = array("latitude"  => $xml->result->geometry->location->lat,
                              "longitude" => $xml->result->geometry->location->lng,
                              "address"   => $xml->result->address_component[0]->long_name.", ".$xml->result->address_component[1]->long_name,
-                             "city"      => isset($xml->result->address_component[3]->long_name) ? $xml->result->address_component[3]->long_name : '',
+                             "city"      => isset($xml->result->address_component[3]->long_name) ? $xml->result->address_component[3]->long_name : 'Camarillo',
                              "state"     => isset($xml->result->address_component[5]->long_name) ? $xml->result->address_component[5]->long_name : '',
                              "zipcode"   => isset($xml->result->address_component[7]->long_name) ? $xml->result->address_component[7]->long_name : '');
         }else{
@@ -142,7 +142,8 @@
         //handling address
         $geodata = getGeoData($event->address);
         $eventElement->appendChild($doc->createElement('address',     $geodata['address']));
-        $eventElement->appendChild($doc->createElement('city',        $geodata['city']));
+        // $eventElement->appendChild($doc->createElement('city',        $geodata['city']));
+        $eventElement->appendChild($doc->createElement('city',        'Camarillo'));
         $eventElement->appendChild($doc->createElement('state',       $geodata['state']));
         $eventElement->appendChild($doc->createElement('zip',         $geodata['zipcode']));
         $eventElement->appendChild($doc->createElement('latitude',    $geodata['latitude']));
@@ -176,8 +177,8 @@
     $results->appendChild($eventsElement);
     $doc->appendChild($results);
 
-    $doc->formatOutput      = true;
-    $oc->preserveWhiteSpace = false;
+    $doc->formatOutput       = true;
+    $doc->preserveWhiteSpace = false;
     echo $doc->saveXML();
 
     ?>

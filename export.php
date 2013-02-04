@@ -22,23 +22,23 @@
     }
 
     function getGeoData($address){
-        $xml = simplexml_load_file("http://maps.google.com/maps/api/geocode/xml?address=".$address.",United States&sensor=false") or die("connection error");
+        $xml = simplexml_load_file("http://maps.google.com/maps/api/geocode/xml?address=".$address.",United States&sensor=false");
 
         // print_r($xml);
 
         if((is_object($xml)) && ($xml->status == 'OK')){
             $geodata = array("latitude"  => $xml->result->geometry->location->lat,
                              "longitude" => $xml->result->geometry->location->lng,
-                             "address"   => $xml->result->address_component[0]->long_name.", ".$xml->result->address_component[1]->long_name,
+                             "address"   => isset($xml->result->address_component[0]->long_name) ? $xml->result->address_component[0]->long_name.", ".$xml->result->address_component[1]->long_name : '',
                              "city"      => isset($xml->result->address_component[3]->long_name) ? $xml->result->address_component[3]->long_name : 'Camarillo',
-                             "state"     => isset($xml->result->address_component[5]->long_name) ? $xml->result->address_component[5]->long_name : '',
+                             "state"     => isset($xml->result->address_component[5]->long_name) ? $xml->result->address_component[5]->long_name : 'CA',
                              "zipcode"   => isset($xml->result->address_component[7]->long_name) ? $xml->result->address_component[7]->long_name : '');
         }else{
             $geodata = array("latitude"  => 0,
                              "longitude" => 0,
                              "address"   => '',
-                             "city"      => '',
-                             "state"     => '',
+                             "city"      => 'Camarillo',
+                             "state"     => 'CA',
                              "zipcode"   => '');
         }
 
@@ -166,7 +166,7 @@
         $eventdates = $doc->createElement('eventdates');
         $dates = getEventDates($event->eventid);
         foreach($dates as $date){
-            $eventdates->appendChild($doc->createElement('eventdate',$date->startdate));
+            $eventdates->appendChild($doc->createElement('eventdate', $date->startdate));
         }
         $eventElement->appendChild($eventdates);
 
